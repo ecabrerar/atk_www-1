@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel><item><title><![CDATA[blog-sidebar]]></title><slug>blog-sidebar</slug><value><![CDATA[&lt;div class=\&quot;span4\&quot;&gt;
+    &lt;div  class=\&quot;search-blog alert-message block-message success\&quot;&gt;
+   &lt;h4&gt;Blog Search&lt;/h4&gt;
+    &lt;?php echo nm_search()?&gt;
+   &lt;/div&gt;
+   &lt;h3&gt;Recent Post&lt;/h3&gt;
+    &lt;?php echo nm_list_recent()?&gt;
+   &lt;h3&gt;Blog Archives&lt;/h3&gt;
+    &lt;?php echo nm_list_archives()?&gt;
+   &lt;h3&gt;Tags&lt;/h3&gt;
+    &lt;?php echo nm_list_tags()?&gt;
+&lt;/div&gt;]]></value></item><item><title><![CDATA[Sidebar]]></title><slug>sidebar</slug><value><![CDATA[          &lt;div class=\&quot;span4 sidebar\&quot;&gt;
+		&lt;dl&gt;
+			&lt;dt&gt;Introduction
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation#overview\&quot;&gt;Overview&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation#changelog\&quot;&gt;Whats new in 1.0.0&lt;/a&gt;&lt;/dd&gt;
+				&lt;!--&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation#eclipse\&quot;&gt;Plugin for eclipse &lt;span class=\&quot;label success\&quot;&gt;New&lt;/span&gt;&lt;/a&gt;&lt;/dd&gt;--&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation#examples\&quot;&gt;Examples&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation#contribute\&quot;&gt;How to contribute&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;apidocs\&quot;&gt;Javadocs&lt;/a&gt;&lt;/dd&gt;
+			&lt;/dt&gt;
+			&lt;dt&gt;Tutorials
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tutorials#setup\&quot;&gt;Minimal Asterisk configuration&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tutorials#helloworld\&quot;&gt;Build and deploy a sample app&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tutorials#handlingevents\&quot;&gt;Handling events&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tutorials#i18n\&quot;&gt;Internationalization&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tutorials#junit\&quot;&gt;JUnit testing&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tutorials#deployapp\&quot;&gt;Deploy to Astive Server&lt;/a&gt;&lt;/dd&gt;
+				&lt;!--&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Using the Web Admin&lt;/a&gt;&lt;/dd&gt;--&gt;
+			&lt;/dt&gt;
+			&lt;dt&gt;Tools
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tools#deployapp#\&quot;&gt;Create a sample audio&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;&lt;?php get_site_url();?&gt;documentation/tools#\&quot;&gt;Transform wav to gsm&lt;/a&gt;&lt;/dd&gt;
+			&lt;/dt&gt;
+			&lt;!--&lt;dt&gt;Resources
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Articles&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Books&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Case Studies&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Community&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Tools &amp; Libraries&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Presentations&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Making ATK Better&lt;/a&gt;&lt;/dd&gt;
+				&lt;dd&gt;&lt;a href=\&quot;#\&quot;&gt;Issue Tracking&lt;/a&gt;&lt;/dd&gt;
+			&lt;/dt&gt;--&gt;
+		&lt;/dl&gt;
+          &lt;/div&gt;
+]]></value></item></channel>

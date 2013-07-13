@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item><title><![CDATA[Astive loopless API]]></title><date><![CDATA[Mon, 02 Jan 2012 12:57:00 -0500]]></date><tags><![CDATA[Tutorials]]></tags><private></private><content><![CDATA[&lt;p&gt;
+	The biggest headache that an Asterisk-IVR implementor needs to deal with, is the&amp;nbsp; amount of loops and conditionals to create a simple navigation. We will show the problem, and how to solve it with the loop-less API &amp;quot;Menu&amp;quot; of Astive.&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;
+	Now, let say that you want to create a two levels IVR to print a text when a DTMF digit is sent(a key pressed). If press the key &amp;#39;1&amp;#39; the program must show &amp;quot;A&amp;quot;, if &amp;#39;2&amp;#39; the text &amp;quot;B&amp;quot;. To implement this extremely simple program with Asterisk-Java(or PHPAGI, PerlAGI...) we will get some like this:&lt;/p&gt;
+&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+answer();
+while(true) {
+    agi.streamFile(&amp;quot;welcome&amp;quot;); // Play a welcome audio
+    boolean ok = false;
+    int maxFailure = 3;
+    int maxFailureLevel2 = 4;
+
+    while(true) { 
+        String data = agi.getData(&amp;quot;menu-item-a-sound&amp;quot;); // For option &amp;quot;A&amp;quot;, press &amp;#39;1&amp;#39;
+
+        if (data.equals(&amp;quot;1&amp;quot;)) {
+            System.out.println(&amp;quot;You pick the option A&amp;quot;);
+
+            // Going to the second level menu
+            while(true) {
+                String data2 = agi.getData(&amp;quot;menu-item-a1-sound&amp;quot;); // For option &amp;quot;A&amp;quot;, press &amp;#39;1&amp;#39;
+
+                if (data.equals(&amp;quot;1&amp;quot;)) {
+		    // Place your program logic here
+                    System.out.println(&amp;quot;You pick the option A&amp;quot;);
+                    break;            
+                }
+
+                data2 = agi.getData(&amp;quot;menu-item-a2-sound&amp;quot;); // For option &amp;quot;A2&amp;quot;, press &amp;#39;2&amp;#39;
+
+                if (data.equals(&amp;quot;2&amp;quot;)) {
+		    // Place your program logic here
+                    System.out.println(&amp;quot;You pick the option A2&amp;quot;);
+                    break;
+                }
+
+                data2 = agi.getData(&amp;quot;menu-item-a3-sound&amp;quot;); // For option &amp;quot;A3&amp;quot;, press &amp;#39;3&amp;#39;
+
+                if (data.equals(&amp;quot;3&amp;quot;)) {
+                    // Place your program logic here
+                    System.out.println(&amp;quot;You pick the option A3&amp;quot;);
+                    break;
+                }
+
+                maxFailureLevel--;
+                if(maxFailureLevel == 0) {
+                    ok = false;
+                    hangup();
+                    break;
+                }
+            }
+
+            ok = true;
+            break;
+        }
+
+        String data = agi.getData(&amp;quot;menu-item-b-sound&amp;quot;); // For option &amp;quot;B&amp;quot;, press &amp;#39;2&amp;#39;
+
+        if (data.equals(&amp;quot;2&amp;quot;)) {
+            // Place your program logic here
+            System.out.println(&amp;quot;You pick the option B&amp;quot;);
+            ok = true;
+            break;
+        }
+
+        String data = agi.getData(&amp;quot;menu-item-c-sound&amp;quot;); // For option &amp;quot;C&amp;quot;, press &amp;#39;3&amp;#39;
+
+        if (data.equals(&amp;quot;3&amp;quot;)) {             
+            System.out.println(&amp;quot;You pick the option C&amp;quot;);
+            ok = true;
+            break;
+        }
+
+        maxFailure--;
+        if(maxFailure == 0) {
+            ok = false;
+            hangup();
+            break;
+        }
+    }
+    if(ok) { 
+        agi.streamFile(&amp;quot;goodbye&amp;quot;); // See you late :)
+        break;
+    }
+}
+hangup();
+...
+&lt;/pre&gt;
+&lt;p&gt;
+	With the loopless API of Astive you can avoid having all those loops or conditionals in your program. In Astive we will have some like this:&lt;/p&gt;
+&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+Menu root = new Menu();
+root.greetingsFile(&amp;quot;welcome&amp;quot;);
+root.setMaxFailures(3);
+
+// Level one 
+Menu itemA = new Menu(&amp;quot;1&amp;quot;, &amp;quot;menu-item-a-sound&amp;quot;);
+itemA.setMaxFailures(3);
+MenuItem itemB = new MenuItem(&amp;quot;2&amp;quot;, &amp;quot;menu-item-b-sound&amp;quot;);
+MenuItem itemC = new MenuItem(&amp;quot;3&amp;quot;, &amp;quot;menu-item-c-sound&amp;quot;);
+
+itemA.setAction(new Action() { 
+    public void actionPerformed() {
+        System.out.println(&amp;quot;Selecciono A&amp;quot;);
+    }
+});
+itemB.setAction(new Action() {
+    public void actionPerformed() {
+        System.out.println(&amp;quot;Selecciono B&amp;quot;);
+    }
+});
+itemC.setAction(new Action() {
+    public void actionPerformed() {
+        System.out.println(&amp;quot;Selecciono C&amp;quot;);
+    }
+});
+
+// Level two
+MenuItem itemA1 = new MenuItem();
+MenuItem itemA2 = new MenuItem();
+MenuItem itemA3 = new MenuItem();
+
+itemA1.setAction(new Action() {
+    public void actionPerformed() {
+        System.out.println(&amp;quot;Selecciono A1&amp;quot;);
+    }
+});
+itemA2.setAction(new Action() {
+    public void actionPerformed() {
+        System.out.println(&amp;quot;Selecciono A2&amp;quot;);
+    }
+});
+itemA3.setAction(new Action() {
+    public void actionPerformed() {
+        System.out.println(&amp;quot;Selecciono A3&amp;quot;);
+    }
+});
+
+itemA.addChild(itemA1);
+itemA.addChild(itemA2);
+itemA.addChild(itemA3);
+
+root.addChild(itemA);
+root.addChild(itemB);
+root.addChild(itemC);
+
+MenuNavigator e = new MenuNavigator(response);
+
+try {
+    e.run(root);
+} catch (MenuException ex) {
+   out.println(ex.getMessage());
+} catch (AgiException ex) {
+   out.println(ex.getMessage());
+}
+...
+&lt;/pre&gt;
+&lt;p&gt;
+	As you notice there is not loop or conditonals that complicate the functions isolation. Also you can take advance of the Event-driven capabilities of Astive. Refer to the &lt;a href=\&quot;http://local.phonytive.com/astive/index.php?id=tutorials\&quot;&gt;tutorial&lt;/a&gt; section for more info.&lt;/p&gt;
+]]></content></item>

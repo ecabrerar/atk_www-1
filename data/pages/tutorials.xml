@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item><pubDate>Sat, 06 Jul 2013 23:56:54 -0400</pubDate><title><![CDATA[Tutorials]]></title><url><![CDATA[tutorials]]></url><meta><![CDATA[ivr, agi, ami, asterisk gateway interface, asterisk maanger, fastagi, asterisk, java, framework, voip, asterisk-java, adhearsion, phpagi, pagi, pami]]></meta><metad><![CDATA[]]></metad><menu><![CDATA[Tutorials]]></menu><menuOrder><![CDATA[3]]></menuOrder><menuStatus><![CDATA[Y]]></menuStatus><template><![CDATA[template.php]]></template><parent><![CDATA[documentation]]></parent><content><![CDATA[&lt;div class=\&quot;span12\&quot;&gt;
+	&lt;section id=\&quot;setup\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Minimal Asterisk configuration&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		Before we start writing Astive apps let&amp;#39;s create the basic Asterisk configuration.&lt;/p&gt;
+	&lt;h3&gt;
+		Create an sip account&lt;/h3&gt;
+	&lt;p&gt;
+		Add a next account to your sip.conf file:&lt;/p&gt;
+	&lt;pre&gt;
+[astive]
+type=friend
+username=astive
+secret=123
+context=astive-context
+&lt;/pre&gt;
+	&lt;h3&gt;
+		Configure the dialplan&lt;/h3&gt;
+	&lt;p&gt;
+		Now add to your Asterisk dialplan the following lines:&lt;/p&gt;
+	&lt;pre&gt;
+[astive-context]
+exten =&amp;gt; 100,1,Agi(agi://127.0.0.1/helloworld)
+&lt;/pre&gt;
+	&lt;p&gt;
+		You should be able to conect to Asterisk using your favorite sofphone.&lt;/p&gt;
+	&lt;blockquote&gt;
+		&lt;small&gt;Keep in mind that you need to reload Asterisk everytime you change any configuration&lt;/small&gt;&lt;/blockquote&gt;
+	&lt;/section&gt; &lt;section id=\&quot;helloworld\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Build and deploy a sample app&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		The easy way to create an app is by using the appCreator tool inside de SDK:&lt;/p&gt;
+	&lt;pre&gt;
+$./appCreator helloworld helloworld
+&lt;/pre&gt;
+	&lt;p&gt;
+		Then go to the helloworld folder and execute:&lt;/p&gt;
+	&lt;pre&gt;
+$mvn package
+&lt;/pre&gt;
+	&lt;p&gt;
+		You have two options to publish the program. The first is using the &lt;em&gt;SimpleAstiveServer&lt;/em&gt;. &lt;em&gt;SimpleAstiveServer&lt;/em&gt; is a minimalistic implementation of &lt;em&gt;Astive Server. &lt;/em&gt;That&amp;#39;s good&amp;nbsp;to develop or test your application, but remeber that you can only publish a single application at the time. The second way is using the standalone Astive Server. This last is the recommended one for production. To run the helloworld with the SimpleAstiveServer, add this code to your app:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+    static public void main(String... args) {
+        try {
+            // Change &amp;quot;new App()&amp;quot; by the name of your Astivlet
+            SimpleAstiveServer server = new SimpleAstiveServer(new App());
+            server.start();
+        } catch (SystemException ex) {
+        } catch (IOException ex) {                        
+        }
+    }
+...&lt;/pre&gt;
+	&lt;/section&gt;&lt;section id=\&quot;handlingevents\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Handling events&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		In this tutorial we will see some of the most important events that Astive support. Available events:&lt;/p&gt;
+	&lt;ul&gt;
+		&lt;li&gt;
+			ActionEvent&lt;/li&gt;
+		&lt;li&gt;
+			AuthenticationEvent&lt;/li&gt;
+		&lt;li&gt;
+			DigitsEvent&lt;/li&gt;
+		&lt;li&gt;
+			Event&lt;/li&gt;
+		&lt;li&gt;
+			FailEvent&lt;/li&gt;
+		&lt;li&gt;
+			InterDigitsTimeoutEvent&lt;/li&gt;
+		&lt;li&gt;
+			KeyEvent&lt;/li&gt;
+		&lt;li&gt;
+			MaxFailureEvent&lt;/li&gt;
+		&lt;li&gt;
+			MaxTimeoutEvent&lt;/li&gt;
+		&lt;li&gt;
+			PositionChangeListener&lt;/li&gt;
+		&lt;li&gt;
+			TimeoutEvent&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;h3&gt;
+		Download and run the example (for the impatient)&lt;/h3&gt;
+	&lt;p&gt;
+		If you want to go directly to see how the example works, you can get it from &lt;a href=\&quot;http://astivetoolkit.org/downloads/\&quot;&gt;download section&lt;/a&gt;.&lt;/p&gt;
+	&lt;h3&gt;
+		Creating a new application&lt;/h3&gt;
+	&lt;p&gt;
+		The easy way to create an app is by using the &lt;em&gt;appCreator&lt;/em&gt; tool inside de SDK:&lt;/p&gt;
+	&lt;pre&gt;
+$./appCreator yourcompany yourproject
+&lt;/pre&gt;
+	&lt;h3&gt;
+		Coding the application&lt;/h3&gt;
+	&lt;p&gt;
+		The &lt;em&gt;appCreator&lt;/em&gt; creates for us the entry point and a bit of code that can be used to ensure that Asterisk well configured. In App.java have something like:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+public class App implements Astivlet {
+    public void onModuleLoad(AstivletRequest request, AstivletResponse response)
+        throws AstiveException {
+        response.answer();
+        response.streamFile(&amp;quot;hello-world&amp;quot;);
+        response.hangup();
+    }
+}
+...
+&lt;/pre&gt;
+	&lt;p&gt;
+		The first step will be to determine how many levels of navigation needs the program. In this case we only want to test events, so let&amp;#39;s create just one level under root Menu. Proceed to create menu items:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+// The options to be selected
+// Check the Java Docs for more info
+MenuItem menuItemA = new MenuItem(&amp;quot;1&amp;quot;, &amp;quot;menu-item-a-sound&amp;quot;);
+MenuItem menuItemB = new MenuItem(&amp;quot;2&amp;quot;, &amp;quot;menu-item-b-sound&amp;quot;);
+MenuItem menuItemC = new MenuItem(&amp;quot;3&amp;quot;, &amp;quot;menu-item-c-sound&amp;quot;);
+...
+&lt;/pre&gt;
+	&lt;p&gt;
+		Adding the event listeners to the items. In this case we use ActionListener to determine when the user press a key.&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+menuItemA.addActionListener(new ActionListener() {
+        public void processAction(ActionEvent evt) {
+            out.println(&amp;quot;menuItem A selected&amp;quot;);
+        }
+    });
+menuItemB.addActionListener(new ActionListener() {
+        public void processAction(ActionEvent evt) {
+            out.println(&amp;quot;menuItem B selected&amp;quot;);
+        }
+    });
+menuItemC.addActionListener(new ActionListener() {
+        public void processAction(ActionEvent evt) {
+            out.println(&amp;quot;menuItem C selected&amp;quot;);
+        }
+    });
+...
+&lt;/pre&gt;
+	&lt;p&gt;
+		Now create the root menu(parent) for items created. Let&amp;#39;s use the parameter setMaxFailures in the root menu to only allow the client to commit four errors (the default is three). Also use the event listener PositionChangeListener to see how MenuNavigator moves through each options. Finally we&amp;#39;ll use KeyListener to determine each time any key is pressed. The code would be as follows:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+Menu root = new Menu();
+root.setMaxFailures(4);
+root.addPositionChangeListener(new PositionChangeListener() {
+        public void positionChange(PositionChangeEvent pce) {
+            out.println(&amp;quot;old obj digits = &amp;quot; +
+                ((MenuItem) pce.getSource()).getDigits());
+            out.println(&amp;quot;cur obj digits = &amp;quot; +
+                ((MenuItem) pce.getNewObject()).getDigits());
+            out.println(&amp;quot;cur pos = &amp;quot; + pce.getPosition());
+        }
+    });
+root.addKeyListener(new KeyListener() {
+        public void keyTyped(KeyEvent evt) {
+            out.println(&amp;quot;keyTyped = &amp;quot; + evt.getKey().name());
+        }
+    });
+root.addChild(menuItemA);
+root.addChild(menuItemB);
+root.addChild(menuItemC);
+...
+&lt;/pre&gt;
+	&lt;p&gt;
+		The last step place the root menu onto MenuNavigator and run it. That is:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+
+MenuNavigator e = new MenuNavigator(response);
+
+try {
+    e.run(root);
+} catch (MenuException ex) {
+   out.println(ex.getMessage());
+} catch (AgiException ex) {
+   out.println(ex.getMessage());
+}
+&lt;/pre&gt;
+	&lt;h3&gt;
+		Getting the sounds for our application&lt;/h3&gt;
+	&lt;p&gt;
+		Go to &lt;a href=\&quot;http://phonytive.com/astive/documentation/tools/\&quot;&gt;tools&lt;/a&gt;&amp;nbsp;section&amp;nbsp;to get help on how to create and convert sample audios to develop your app.&lt;/p&gt;
+	&lt;/section&gt; &lt;section id=\&quot;i18n\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Internationalization&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		Comming...&lt;/p&gt;
+	&lt;/section&gt; &lt;section id=\&quot;junit\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			JUnit testing&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		Comming...&lt;/p&gt;
+	&lt;/section&gt; &lt;section id=\&quot;deployapp\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Deploy to Astive Server&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;h3&gt;
+		Download and install Astive Toolkit&lt;/h3&gt;
+	&lt;p&gt;
+		Go to the &lt;a href=\&quot;http://astivetoolkit.org/downloads/\&quot;&gt;download&lt;/a&gt; section and get the server and toolkit. Aditionaly you can download the examples included in the list.&lt;/p&gt;
+	&lt;h3&gt;
+		Run the Astive Server&lt;/h3&gt;
+	&lt;p&gt;
+		After you download the server you will have some like this:&lt;/p&gt;
+	&lt;pre&gt;
+apps  bin  conf  lib  LICENCE  logs  NOTICE  README.md
+&lt;/pre&gt;
+	&lt;p&gt;
+		Once there you can deploy your application. For futher options execute:&lt;/p&gt;
+	&lt;section&gt;
+	&lt;pre&gt;
+$./bin/astive --help
+astived &lt;command&gt;&lt;/command&gt; [options] [args]
+
+Available commands:
+deploy &lt;file&gt;   Deploy an astive app into Astive Server
+start           Start the Astive Remote Server for accessing in
+		client/server mode.
+stop            Stop the Astive Remote Server.
+undeploy &lt;file&gt; Undeploy an astive app
+
+Try &amp;#39;astived &lt;command&gt;&lt;/command&gt; --help&amp;#39; for help on a specific command.
+For example &amp;#39;astived start --help&amp;#39;.
+
+Phonytive Astive -- Astive Container System and Server.
+For additional information, see http://astivetoolkit.org
+Bug Reports to &amp;lt;dev@astivetoolkit.org&amp;gt;&lt;users@astive.phonytive.com&gt;
+&lt;/users@astive.phonytive.com&gt;&lt;/file&gt;&lt;/file&gt;&lt;/pre&gt;
+	&lt;h3&gt;
+		Run the helloworld&lt;/h3&gt;
+	&lt;p&gt;
+		By default a helloworld is include with Astive Server. Before you run it, ensure you have a &amp;#39;hello-world&amp;#39; audio loaded by Asterisk. At this point you should be able to call the extension &amp;quot;100&amp;quot; a hear a &amp;quot;Hello World&amp;quot; message.&lt;/p&gt;
+	&lt;/section&gt;&lt;/section&gt;&lt;/div&gt;
+]]></content><private><![CDATA[]]></private></item>

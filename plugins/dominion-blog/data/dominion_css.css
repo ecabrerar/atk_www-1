@@ -1,0 +1,35 @@
+#dominion_blog_footer{
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+}
+#dominion_blog_header{
+  clear:both;
+  text-align:left;
+ font-size : 1.3em;
+ background-color:#f1f3bc;
+
+}
+
+#dominion_blog_data{
+  width:90%;
+  margin-left:auto;
+  margin-right:auto;
+
+}
+
+#dominion_news_list_header{ 
+  //used for the list that can be displayed in sidebar
+}
+#dominion_news_header{
+  clear:both;
+  text-align:left;
+font-size : 1.8em;
+ background-color:#f1f3bc;
+padding-left:10px;
+ width:90%;
+
+}
+
+#dominion_news_data{}
+#dominion_news_footer{}

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item><title><![CDATA[How to get Astive up and running [Updated]]]></title><date><![CDATA[Mon, 02 Jan 2012 12:56:00 -0500]]></date><tags><![CDATA[Tutorials]]></tags><private></private><content><![CDATA[&lt;p&gt;
+	Follow the next step by step tutorial to create a simple hello world. As you get familiar with the enviroment you will be able to write more complex applications.&lt;/p&gt;
+&lt;p&gt;
+	&lt;b&gt;Installing Asterisk&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;
+	Download and install the last stable Asterisk. Check how to do it &amp;nbsp;for your linux distro.&lt;/p&gt;
+&lt;p&gt;
+	&lt;b&gt;Configure your Asterisk&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;
+	We need to touch a least two files on the Asterisk configuration; extention.conf and sip.conf. In your sip.conf add this entry:&lt;/p&gt;
+&lt;pre&gt;
+...
+[astive] 
+type=friend
+username=astive
+secret=123
+context=astive-context 
+&lt;/pre&gt;
+&lt;p&gt;
+	In your dialplan add this lines:&lt;/p&gt;
+&lt;pre&gt;
+...
+[astive-context] 
+exten =&amp;gt; 100,1,Answer 
+exten =&amp;gt; 100,2,Playback(hello-world)
+&lt;/pre&gt;
+&lt;p&gt;
+	Reload you the sip and the dial plan by doing &amp;#39;sip reload&amp;#39; and &amp;#39;dialplan reload&amp;#39; on the Asterisk CLI. You should do that everytime change your configuration.&lt;/p&gt;
+&lt;p&gt;
+	&lt;b&gt;Chosing and installing a softphone&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;
+	They are many free sofphones in the market that you can use. I been using Twinkle for few years, and I belive is pretty decent. If you chose Twinkle go to File-&amp;gt;Change User-&amp;gt;Create profile and configure it as the example:&lt;/p&gt;
+&lt;p&gt;
+	&lt;img alt=\&quot;\&quot; class=\&quot;gs_image\&quot; src=\&quot;http://phonytive.com/astive/data/uploads/blog-images/tw-user-config.png\&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;
+	You will need also to chage the SIP Port. To do so, go to Edit-&amp;gt;System settings-&amp;gt;Network and change the port from 5060 to 5061(for example). Now if everything goes right you should be able to register your sofphone, call to the extention &amp;#39;100&amp;#39; and hear a &amp;quot;Hello World&amp;quot;.&lt;/p&gt;
+&lt;p&gt;
+	&lt;b&gt;Installing Apache Maven&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;
+	We chose Apache Maven as the default project builder. This is not required, but its highly recommended since it make easy the dependencies managment a other cool stuffs. In Ubuntu is as easy as:&lt;/p&gt;
+&lt;pre&gt;
+$apt-get install maven2&lt;/pre&gt;
+&lt;p&gt;
+	&lt;b&gt;Using the appCreator to create a new project&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;
+	Download the SDK from the &lt;a href=\&quot;http://local.phonytive.com/astive/index.php?id=downloads\&quot;&gt;download section&lt;/a&gt;. Decompress the file and execute the util appCreator as follow:&lt;/p&gt;
+&lt;pre&gt;
+$./appCreator yourcompany yourproject
+&lt;/pre&gt;
+&lt;p&gt;
+	You should be able to see a folder with the name &amp;quot;yourproject&amp;quot;. If we execute the comand &amp;#39;tree&amp;#39;, we will see something similar to:&lt;/p&gt;
+&lt;pre&gt;
+.
+|-- pom.xml
+`-- src
+    `-- main
+        |-- java
+        |   `-- yourcompany
+        |       `-- App.java
+        `-- resources
+            |-- app.xml
+            `-- hello-world.gsm
+&lt;/pre&gt;
+&lt;blockquote&gt;
+	&lt;small&gt;I recommend to take a look of App.java. The file &amp;#39;hello-world.gsm&amp;#39; is a test audio for your program.&lt;/small&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+	If you look inside the file app.xml, you will see the mapping parameters. For this project the following configuration has been defined:&lt;/p&gt;
+&lt;pre&gt;
+&amp;lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&amp;gt;
+&amp;lt;app&amp;gt;    
+    &amp;lt;name&amp;gt;Your Project&amp;lt;/name&amp;gt;
+    &amp;lt;description&amp;gt;...&amp;lt;/description&amp;gt;
+    &amp;lt;astivlet&amp;gt;
+        &amp;lt;astivletId&amp;gt;yourproject&amp;lt;/astivletId&amp;gt;
+        &amp;lt;class&amp;gt;yourcompany.yourproect&amp;lt;/class&amp;gt;
+    &amp;lt;/astivlet&amp;gt;
+    &amp;lt;astivletMapping&amp;gt;
+        &amp;lt;astivletId&amp;gt;yourproject&amp;lt;/astivletId&amp;gt;
+        &amp;lt;urlPattern&amp;gt;/YourProject&amp;lt;/urlPattern&amp;gt;
+    &amp;lt;/astivletMapping&amp;gt;    
+&amp;lt;/app&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;
+	Go to the dial plan(extensions.conf) and point to your application. It should be similar to:&lt;/p&gt;
+&lt;pre&gt;
+[astive-context]
+exten =&amp;gt; 100,1,Agi(agi://127.0.0.1/yourproject)
+&lt;/pre&gt;
+&lt;p&gt;
+	Go inside your new project and create a .jar as follow:&lt;/p&gt;
+&lt;pre&gt;
+$mvn package
+&lt;/pre&gt;
+&lt;p&gt;
+	&lt;b&gt;Deploying the application&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;
+	Before deploy the application ensure that all requiered sounds are loaded into Asterisk. Download the last Astive Server. Decompress the folder. Place yourproject.jar inside de folder &amp;quot;apps&amp;quot;. Execute this in your shell:&lt;/p&gt;
+&lt;pre&gt;
+$./bin/astived start
+PhonyTive AstiveServer 1.0.0-M1    build: 20120723-0317
+http://astive.phonytive.com/
+[init] Astive Remote Server
+** Starting Services **
+NAME		IP		PORT
+astived		127.0.0.1	4573
+admin thread	127.0.0.1	4200
+telned		127.0.0.1	4202
+-------
+Ready!
+[DEBUG] port = 4573
+[DEBUG] backlog = 200
+[DEBUG] bindAddr = /127.0.0.1
+[INFO ] Starting
+[DEBUG] Starting fast agi server socket
+[DEBUG] Deploying applications into ~/opt/astive-server-1.0.0-M1/apps/
+[DEBUG] Deploying file yourproject.jar
+[DEBUG] Adding url = /YourProject class = yourcompany.yourproject.App
+[DEBUG] App (name=Your Project)
+[DEBUG] Starting connection monitor
+
+
+]]></content></item>

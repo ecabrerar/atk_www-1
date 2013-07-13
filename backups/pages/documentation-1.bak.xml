@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item><pubDate>Fri, 30 Dec 2011 20:42:29 -0500</pubDate><title><![CDATA[Tools]]></title><url><![CDATA[documentation-1]]></url><meta><![CDATA[]]></meta><metad><![CDATA[]]></metad><menu><![CDATA[Tools]]></menu><menuOrder><![CDATA[0]]></menuOrder><menuStatus><![CDATA[]]></menuStatus><template><![CDATA[template.php]]></template><parent><![CDATA[documentation]]></parent><content><![CDATA[&lt;div class=&quot;span12&quot;&gt;
+	&lt;section id=&quot;tools&quot;&gt;
+	&lt;div class=&quot;page-header&quot;&gt;
+		&lt;h1&gt;
+			Create Sample Audio&lt;/h1&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		During the early stage of development we may need to modify the audio several times and/or add new ones. I therefore recommend using a resource like&amp;lt;a href=&amp;quot;www2.research.att.com/~ttsweb/tts/demo.php&amp;quot;&amp;gt; AT &amp;amp;amp; T Labs Natural Voices &amp;amp;reg;&amp;lt;/a&amp;gt;, which allows us to create voices from text (TTS). Of course to put into production it is best to record a real voice.&lt;/p&gt;
+	&lt;/section&gt; &lt;section id=&quot;convert&quot;&gt;
+	&lt;div class=&quot;page-header&quot;&gt;
+		&lt;h1&gt;
+			Convert from Wav to GSM&lt;/h1&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		The resulting file will have extension WAV. To take it to the native format just go to the audio directory and run the following command:&lt;/p&gt;
+	&lt;pre&gt;
+for a in *.wav; do sox &amp;quot;$a&amp;quot; -r 8000 -c1 &amp;quot;`echo $a|sed -e s/wav//`gsm&amp;quot; resample -ql; done&amp;nbsp;
+&lt;/pre&gt;
+	&lt;/section&gt;&lt;/div&gt;
+]]></content><private><![CDATA[]]></private></item>

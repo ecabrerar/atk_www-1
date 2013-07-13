@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item><pubDate>Thu, 26 Jul 2012 09:14:45 -0400</pubDate><title><![CDATA[Documentation]]></title><url><![CDATA[documentation]]></url><meta><![CDATA[ivr, agi, ami, asterisk gateway interface, asterisk maanger, fastagi, asterisk, java, framework, voip, asterisk-java, adhearsion, phpagi, pagi, pami]]></meta><metad></metad><menu><![CDATA[Documentation]]></menu><menuOrder><![CDATA[2]]></menuOrder><menuStatus><![CDATA[Y]]></menuStatus><template><![CDATA[template.php]]></template><parent></parent><content><![CDATA[&lt;div class=\&quot;span12\&quot;&gt;
+	&lt;section id=\&quot;overview\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Overview&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;p&gt;
+		Astive is a toolkit and server for Java that provides an extensible architecture for developing, maintaining, and deploying telephony applications. Build high-quality apps for Asterisk&amp;reg; PBX with Astive developer solutions - Astive Toolkit and Astive Server.&lt;/p&gt;
+	&lt;blockquote&gt;
+		&lt;small&gt;Note: Astive is in his early version and is not recomended for production enviroments.&lt;/small&gt;&lt;/blockquote&gt;
+	&lt;h3&gt;
+		How its work(Menu, MenuItem, Action and Autenticator)&lt;/h3&gt;
+	&lt;h3&gt;
+		Menu&amp;#39;s and MenuItem&amp;#39;s&lt;/h3&gt;
+	&lt;p&gt;
+		Astive takes the conceptual similarity between the menus on desktop applications and menus in a IVR. The Java class &lt;em&gt;Menu&lt;/em&gt; allows you to add others menus and items that create a nested structure which is then charge into an engine. The &lt;em&gt;Menu&lt;/em&gt;&amp;nbsp;inherits the characteristics of &lt;em&gt;MenuItem&lt;/em&gt;. The Menu&amp;#39;s and MenuItem&amp;#39;s can add multiple Listeners (As &lt;em&gt;KeyListeners&lt;/em&gt;, &lt;em&gt;PositionChangeListener&lt;/em&gt;, &lt;em&gt;TimeoutListeners&lt;/em&gt; ...) to deliver events resulting from client interaction.&lt;/p&gt;
+	&lt;h3&gt;
+		Action&amp;#39;s&lt;/h3&gt;
+	&lt;p&gt;
+		An action occurs as a result of the selection of a &lt;em&gt;Menu&lt;/em&gt; or &lt;em&gt;MenuItem&lt;/em&gt;. It&amp;#39;s where you write the application logic, for example redirect the call, list options stored in a database, make calls to Web Services and anything that the program needs to be done. A custom action must implement the Action interface. An action looks like:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+public MyAction implements Action { 
+ public void doAction() { 
+    // Do something intersting 
+ } 
+} 
+&lt;/pre&gt;
+	&lt;p&gt;
+		Another way to add actions to a &lt;em&gt;Menu&lt;/em&gt; or &lt;em&gt;MenuItem&lt;/em&gt; is Adding an &lt;em&gt;ActionListener&lt;/em&gt;. The difference is that you can add multiple Listeners and therefore run several actions at a time.&lt;/p&gt;
+	&lt;h3&gt;
+		Authenticator&amp;#39;s&lt;/h3&gt;
+	&lt;p&gt;
+		Authentication is an optional but very important feature that you will need in many scenaries. With an authenticator you can restrict access to certain areas in your Menu. You should extends the &lt;em&gt;Authenticator&lt;/em&gt; object to create your own authentication mechanism (eg.: ANY authentication).&lt;/p&gt;
+	&lt;h3&gt;
+		The archetype module &amp;#39;astive-archetype&amp;#39;&lt;/h3&gt;
+	&lt;p&gt;
+		Is the Maven Archetype created to give support to Astive Toolkit. It create for you and standard file structure for Astive applications. A fresh Astive project looks like:&lt;/p&gt;
+	&lt;pre class=\&quot;prettyfy\&quot;&gt;
+|-- pom.xml
+`-- src
+    `-- main
+        |-- java
+        |   `-- com
+        |       `-- phonytive
+        |           `-- astive
+        |               `-- helloworld
+        |                   `-- App.java
+        `-- resources
+            |-- app.xml
+            `-- hello-world.gsm
+&lt;/pre&gt;
+	&lt;/section&gt; &lt;section id=\&quot;changelog\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			What&amp;#39;s new in 1.0.0&lt;/h2&gt;
+		&lt;p&gt;
+			Comming...&lt;/p&gt;
+	&lt;/div&gt;
+	&lt;/section&gt;&lt;!-- &lt;section id=\&quot;eclipse\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Pluging for eclipse&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;/section&gt; --&gt;&lt;section id=\&quot;examples\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			Examples&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;h3&gt;
+		An Snippet&lt;/h3&gt;
+	&lt;pre class=\&quot;prettyprint\&quot;&gt;
+...
+Menu root = new Menu();
+MenuItem itemA = new MenuItem(&amp;quot;1&amp;quot;, &amp;quot;press-one-to-option-a&amp;quot;);
+MenuItem itemB = new MenuItem(&amp;quot;2&amp;quot;, &amp;quot;press-two-to-option-b&amp;quot;);
+
+itemA.setAction(new GoTo(agi, root)); // A built-in Action to move client to another menu.
+itemB.setAction(new Action() {
+        public void doAction() {
+            // Do something intersting here.
+        }
+    });
+root.addKeyListener(new KeyListener() {
+        public void keyTyped(KeyEvent ke) {
+            // Do something intersting here.
+        }
+    });
+
+root.addChild(itemA);
+root.addChild(itemB);
+
+MenuNavigator e = new MenuNavigator(response);
+
+try {
+    e.run(root);
+} catch (MenuException ex) {
+    out.println(ex.getMessage());
+} catch (AgiException ex) {
+    out.println(ex.getMessage());
+}
+...
+&lt;/pre&gt;
+	&lt;blockquote&gt;
+		&lt;small&gt;As you realize this is a loopless code :)&lt;/small&gt;&lt;/blockquote&gt;
+	&lt;/section&gt; &lt;section id=\&quot;contribute\&quot;&gt;
+	&lt;div class=\&quot;page-header\&quot;&gt;
+		&lt;h2&gt;
+			How to contribute&lt;/h2&gt;
+	&lt;/div&gt;
+	&lt;ul&gt;
+		&lt;li&gt;
+			Documentation&lt;/li&gt;
+		&lt;li&gt;
+			Development planning&lt;/li&gt;
+		&lt;li&gt;
+			Reporting bugs&lt;/li&gt;
+		&lt;li&gt;
+			Fixing bugs and other programming&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;h3&gt;
+		Documentation&lt;/h3&gt;
+	&lt;p&gt;
+		A good documentation is an essential part in the adoption of any software. A very valuable contribution. You can participate in the creation of tutorials and other documentation to help users better understand how Astive works.&lt;/p&gt;
+	&lt;h3&gt;
+		Development planning&lt;/h3&gt;
+	&lt;p&gt;
+		One way to participate in Astive development is to suggest features and participate in the development planning process. Even if you aren&amp;#39;t a developer, you can help build consensus and formalize proposals, so that developers can quickly ascertain what the community is hoping to achieve with a particular feature.&lt;/p&gt;
+	&lt;h3&gt;
+		Reporting bugs&lt;/h3&gt;
+	&lt;p&gt;
+		Another way you can contribute to Astive development is by reporting any problems you find. Your help with reporting bugs will be highly appreciated.&lt;/p&gt;
+	&lt;h3&gt;
+		Fixing bugs and other programming&lt;/h3&gt;
+	&lt;p&gt;
+		You can also help the development of Astive by fixing problems that have been reported by you or another person in the Astive problems records. This process is also known as &amp;quot;patching&amp;quot;.&lt;/p&gt;
+	&lt;/section&gt;&lt;/div&gt;
+]]></content><private></private></item>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item><title><![CDATA[Astive Toolkit 1.0.0 alpha2 just released]]></title><date><![CDATA[Sat, 31 Mar 2012 19:05:19 -0400]]></date><tags></tags><private></private><content><![CDATA[&lt;p&gt;
+	I&amp;#39;m exited to announce the alpha2 release, to include bug fix and support for multiple ivr&amp;#39;s per application. Features included at this point by Astive Toolkit are:&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;
+		Multiple ivr&amp;#39;s per application.&lt;/li&gt;
+	&lt;li&gt;
+		Support for Asterisk 1.2 &amp;gt;&lt;/li&gt;
+	&lt;li&gt;
+		Application-Server like operations(start, stop, undeploy, deploy...).&lt;/li&gt;
+	&lt;li&gt;
+		Control of multiple Asterisk servers at the same time.&lt;/li&gt;
+	&lt;li&gt;
+		API&amp;#39;s for menu&amp;#39;s creation and Asterisk control.&lt;/li&gt;
+	&lt;li&gt;
+		Event-driven architecture.&lt;/li&gt;
+	&lt;li&gt;
+		Well documented.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+	You can downloaded at:&lt;/p&gt;
+&lt;p&gt;
+	&lt;a href=\&quot;http://bit.ly/H6YTnK\&quot;&gt;http://bit.ly/H6YTnK&lt;/a&gt; (Pre-compile)&lt;br /&gt;
+	&lt;a href=\&quot;http://bit.ly/H6YTnK\&quot;&gt;http://bit.ly/Hv2TkE&lt;/a&gt; (Source code)&lt;/p&gt;
+]]></content></item>
